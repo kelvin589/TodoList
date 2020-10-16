@@ -16,7 +16,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * A controller for the main UI of the to-do list application.
+ */
 public class ListController {
     private ObservableList<Task> obsTaskList;
     private FileHandler fileHandler;
@@ -31,6 +35,11 @@ public class ListController {
     @FXML private TextField txtBoxPath;
     @FXML private ListView<Task> listviewList;
 
+    /**
+     * The constructor:
+     * Creates a new {@link TaskList} to act as a temporary data store. A {@link FileHandler} to
+     * handle saving and loading of files. A {@link FXCollections#observableList(List)} to track changes.
+     */
     public ListController() {
         this.taskList = new TaskList();
         this.fileHandler = new FileHandler(taskList);
@@ -38,6 +47,9 @@ public class ListController {
         listviewList = new ListView<>();
     }
 
+    /**
+     * Initialise the UI by setting the {@link TextField} to the users desktop
+     */
     @FXML
     public void initialize() {
         String desktopPath = System.getProperty("user.home") + "/Desktop/";
@@ -46,6 +58,10 @@ public class ListController {
         txtBoxPath.setText(desktopPath+fileName);
     }
 
+    /**
+     * Executes when save button is pressed. Creates a new {@link TaskList} to store the changes
+     * and creates a new {@link FileHandler} to save the file to the path in the {@link TextField}.
+     */
     @FXML
     public void saveFile() {
         TaskList tl = new TaskList();
@@ -56,12 +72,23 @@ public class ListController {
         fh.write(txtBoxPath.getText());
     }
 
+    /**
+     *  Uses the {@code fileHandler} to read the file at the path given by {@link TextField} and sets
+     *  that to the {@code obsTaskList}. The items in the {@link ListView} are then set to this {@code obsTaskList}.
+     */
     @FXML
     public void loadFile() {
         obsTaskList = fileHandler.read(txtBoxPath.getText()).tasksProperty();
         listviewList.setItems(obsTaskList);
     }
 
+    /**
+     * Executes when complete button is pressed to mark a task as complete or not complete depending on
+     * the current state of the current state of the {@code task}. The index of the selected item is retrieved
+     * and is checked to make sure it is greater than -1 otherwise a {@code NullPointerException} may occur when
+     * nothing is selected. The item is retrieved and marked as the inverse of its {@link Task#isCompleted()}.
+     * The {@link ListView} is then refreshed.
+     */
     @FXML
     public void taskComplete() {
         int index = listviewList.getSelectionModel().getSelectedIndex();
@@ -73,6 +100,13 @@ public class ListController {
         listviewList.refresh();
     }
 
+    /**
+     * To remove a task, a new dialog is opened. The modality is set to make sure the user has to
+     * select some option in the dialog. If the user selects confirm
+     * (checked by {@link RemoveController#isConfirmed()},
+     * then the selected item
+     * will be removed from the {@link ListView}.
+     */
     @FXML
     public void removeTask() {
         int index = listviewList.getSelectionModel().getSelectedIndex();
@@ -99,7 +133,13 @@ public class ListController {
             }
         }
     }
-    
+
+    /**
+     *  Add task button displays a new dialog to add a task. The modality is set to make sure the user has to interact
+     *  with the dialog. The user types their task into the {@link TextField} and either confirms the addition or cancels this.
+     *  If the confirm button is pressed (checked by {@link AddController#isConfirmed()} then a new {@link Task}
+     *  object is created and added to the {@link ListView}.
+     */
     @FXML
     public void addTask() {
         try {

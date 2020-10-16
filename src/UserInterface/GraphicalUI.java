@@ -1,17 +1,18 @@
 package UserInterface;
 
-import Components.TaskList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * For loading the main UI of the application.
+ */
 public class GraphicalUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         try {
-            final TaskList taskList = new TaskList();
             final FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("TodoListUI.fxml"));
             fxmlLoader.setController(new ListController());
