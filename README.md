@@ -3,7 +3,7 @@ A simple to-do list created with Java
 
 ## Table of Contents
 * [Introduction](#introduction)
-* [Possible Improvements](#possible_improvements)
+* [Possible Improvements](#possible-improvements)
 * [Technologies](#technologies)
 * [Setup](#setup)
 
